@@ -86,11 +86,14 @@ namespace FlaskeAutomatenTake
                 Console.WriteLine("\n\n");
             } while (true) ;
         }
-
+        //This method sort the beverages in two containers (arrays) once the producerbuf is full.
+        //Then in enters and locks the producerbuf, beerbuf and sodabuf one at a time, starting with the producerbuf.
+        //When all three are locked, the sorting begins.
         public void SortBeverages()
         {
             do
             {
+                //First 
                 if (CheckIfFull(producerbuf) == true)
                 {
                     try
@@ -108,9 +111,11 @@ namespace FlaskeAutomatenTake
                                         Monitor.Enter(sodabuf);
                                         lock (sodabuf)
                                         {
+                                            //Here it goes trough the producerbuf and determines if it's a beer og a soda.
+                                            //Then moves it to that, by creating a "new beverage" with the same info and deleting it from the producerbuf.
                                             for (int i = 0; i < producerbuf.Length; i++)
                                             {
-
+                                                
                                                 if (producerbuf[i].BeverageType == "Beer")
                                                 {
                                                     while (b < beerbuf.Length && beerbuf[b] != null) b++;
@@ -144,7 +149,8 @@ namespace FlaskeAutomatenTake
                                                     }
                                                 }
                                             }
-
+                                            #region Show beerbuf and sodabuf
+                                            //This region is just to show what is in the beerbuf and sodabuf.
                                             Console.WriteLine("\nBeers in:");
                                             for (int i = 0; i < beerbuf.Length; i++)
                                             {
@@ -162,6 +168,7 @@ namespace FlaskeAutomatenTake
                                                     Console.WriteLine(sodabuf[i].BeverageType + sodabuf[i].BeverageID);
                                                 }
                                             }
+                                            #endregion
                                             Monitor.PulseAll(sodabuf);
                                             Monitor.PulseAll(beerbuf);
                                             Monitor.PulseAll(producerbuf);
@@ -182,18 +189,19 @@ namespace FlaskeAutomatenTake
                     finally //Producerbuf
                     {
                         Monitor.Exit(producerbuf);
-                        Thread.Sleep(1000);
+                        Thread.Sleep(2000);
                     }
-                    //Console.ReadLine();
+                    //When it's done sorting, it exits and unlucks the arrays and the thread sleeps for 1 sek.
                 }
             } while (true);
 
         }
-
+        //This method "disposes" of the beers.
         public void GetBeers()
         {
             do
             {
+                //First it checks if the beerbuf is full, when it is, it types out what beers have been picked up and then deletes them from the array.
                 if (CheckIfFull(beerbuf) == true)
                 {
                     try
@@ -219,11 +227,12 @@ namespace FlaskeAutomatenTake
                 }
             } while (true);
         }
-
+        //This method "disposes" of the sodas.
         public void GetSodas()
         {
             do
             {
+                //First it checks if the sodabuf is full, when it is, it types out what sodas have been picked up and then deletes them from the array.
                 if (CheckIfFull(sodabuf) == true)
                 {
                     try
@@ -249,6 +258,7 @@ namespace FlaskeAutomatenTake
                 }
             } while (true);
         }
+        //This methods checks if an array is full and then returns either true or false.
         public bool CheckIfFull(Beverage[] arrayToCheck)
         {
             bool b = false;
@@ -264,25 +274,6 @@ namespace FlaskeAutomatenTake
                 {
                     b = true;
                     i++;
-                }
-            }
-            return b;
-        }
-        public bool CheckIfEmpty(Beverage[] arrayToCheck)
-        {
-            bool b = true;
-
-            for (int i = 0; i < arrayToCheck.Length; i++)
-            {
-                if (arrayToCheck[i] == null)
-                {
-                    b = true;
-                    i++;
-                }
-                else if (arrayToCheck != null)
-                {
-                    b = false;
-                    break;
                 }
             }
             return b;
