@@ -84,7 +84,7 @@ namespace FlaskeAutomatenTake
                     Thread.Sleep(1000);
                 }
                 Console.WriteLine("\n\n");
-            } while (true) ;
+            }
         }
         //This method sort the beverages in two containers (arrays) once the producerbuf is full.
         //Then in enters and locks the producerbuf, beerbuf and sodabuf one at a time, starting with the producerbuf.
