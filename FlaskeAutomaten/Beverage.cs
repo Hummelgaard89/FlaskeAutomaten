@@ -81,7 +81,7 @@ namespace FlaskeAutomatenTake
                 finally
                 {
                     Monitor.Exit(producerbuf);
-                    Thread.Sleep(1000);
+                    Thread.Sleep(2000);
                 }
                 Console.WriteLine("\n\n");
             }
@@ -273,7 +273,6 @@ namespace FlaskeAutomatenTake
                 else if (arrayToCheck != null)
                 {
                     b = true;
-                    i++;
                 }
             }
             return b;
